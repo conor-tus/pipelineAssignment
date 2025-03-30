@@ -17,9 +17,10 @@ pipeline{
         stage('SonarScanner'){
             steps{
                 script{
-                    withCredentials([string(credentialsId: 'c7ad6df1-86ea-4671-b7e8-4d65cad0ef45', variable: 'SONAR_TOKEN')])
-                    withSonarQubeEnv(SONARQUBE){
-                        bat "mvn sonar:sonar -Dsonar.login=$SONAR_TOKEN"
+                    withCredentials([string(credentialsId: 'c7ad6df1-86ea-4671-b7e8-4d65cad0ef45', variable: 'SONAR_TOKEN')]){
+                        withSonarQubeEnv(SONARQUBE){
+                            bat "mvn sonar:sonar -Dsonar.login=$SONAR_TOKEN"
+                        }
                     }
                 }
             }
