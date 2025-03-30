@@ -3,7 +3,7 @@ pipeline{
     stages{
         stage('checkout'){
             steps{
-                get 'https://github.com/conor-tus/pipelineAssignment.git'
+                git 'https://github.com/conor-tus/pipelineAssignment.git'
             }
         }
         stage('Build'){
