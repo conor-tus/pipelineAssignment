@@ -11,6 +11,12 @@ pipeline{
                 bat "mvn clean compile"
             }
         }
+        stage('SonarScanner'){
+            steps{
+                cd ./src
+                bat "sonar-scanner.bat"
+            }
+        }
         stage('test'){
             steps{
                 bat "mvn test"
