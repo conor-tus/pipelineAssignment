@@ -1,0 +1,26 @@
+pipeline{
+    agent any
+    stages{
+        stage('checkout'){
+            steps{
+                get 'https://github.com/conor-tus/pipelineAssignment.git'
+            }
+        }
+        stage('Build'){
+            steps{
+                bat "mvn clean compile"
+            }
+        }
+        stage('test'){
+            steps{
+                bat "mvn test"
+                junit '**/target/surefire-reports/TEST-*.xml'
+            }
+        }
+        stage('Package'){
+            steps{
+                bat "mvn package"
+            }
+        }
+    }
+}
