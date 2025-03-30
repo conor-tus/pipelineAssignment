@@ -1,5 +1,8 @@
 pipeline{
     agent any
+    environment{
+        SONARQUBE = 'sonarqube'
+    }
     stages{
         stage('checkout'){
             steps{
@@ -9,6 +12,15 @@ pipeline{
         stage('Build'){
             steps{
                 bat "mvn clean compile"
+            }
+        }
+        stage('SonarScanner'){
+            steps{
+                script{
+                    withSonarQubeEnv(SONARQUBE){
+                        bat "mvn sonar:sonar -Dsonar.login=$SONAR_TOKEN"
+                    }
+                }
             }
         }
         stage('test'){
