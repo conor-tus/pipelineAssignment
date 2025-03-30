@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import org.tus.libraryservice.constants.BooksConstants;
 import org.tus.libraryservice.dto.BooksDto;
 import org.tus.libraryservice.dto.ResponseDto;
-import org.tus.libraryservice.entity.Books;
 import org.tus.libraryservice.service.IBooksService;
 
 import java.util.List;
