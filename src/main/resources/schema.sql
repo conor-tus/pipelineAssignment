@@ -25,13 +25,21 @@ CREATE TABLE IF NOT EXISTS checked_books (
     library_user_id int,
     foreign key (library_user_id) references library_user(library_user_id),
     book_name varchar(100) DEFAULT NULL,
-    return_status varchar(100) DEFAULT NULL,
+    checked_status varchar(100) DEFAULT NULL,
     created_at date NOT NULL,
     created_by varchar(20) NOT NULL,
     updated_at date DEFAULT NULL,
     updated_by varchar(20) DEFAULT NULL
     );
 
+insert INTO library_user(username, email, mobile_number, created_at, created_by)
+VALUES
+    ('admin_user', 'admin@gmail.com', '0987654321', '2025-02-13', 'admin'),
+    ('admin_user2', 'admin2@gmail.com', '0987654312', '2025-02-13', 'admin');
+
+insert INTO checked_books(library_user_id, book_name, checked_status, created_at, created_by)
+VALUES
+    ('1','Frankenstein','ON_TIME','2025-02-13', 'admin');
 
 
 INSERT INTO books (book_name, author, page_count, created_at, created_by)

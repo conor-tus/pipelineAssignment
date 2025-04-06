@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.tus.libraryservice.dto.BooksDto;
 import org.tus.libraryservice.entity.Books;
 import org.tus.libraryservice.entity.LibraryUser;
+import org.tus.libraryservice.exception.ResourceAlreadyExistsException;
 import org.tus.libraryservice.exception.ResourceNotFoundException;
 import org.tus.libraryservice.mapper.BooksMapper;
 import org.tus.libraryservice.mapper.LibraryUserMapper;
@@ -16,6 +17,7 @@ import org.tus.libraryservice.service.IBooksService;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.tus.libraryservice.mapper.BooksMapper.mapToBooksDto;
 
@@ -28,6 +30,13 @@ public class BooksServiceImpl implements IBooksService {
     @Override
     public void addBook(BooksDto booksDto) {
         Books books = BooksMapper.mapToBooks(booksDto, new Books());
+        //check for duplicate books
+
+        Optional<Books> bookcheck = booksRepository.findBookByBookName(books.getBookName());
+        if (bookcheck.isPresent()) {
+            throw new ResourceAlreadyExistsException("Book already exists");
+        }
+
         booksRepository.save(books);
     }
 
