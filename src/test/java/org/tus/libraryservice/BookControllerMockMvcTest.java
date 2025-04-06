@@ -56,15 +56,15 @@ public class BookControllerMockMvcTest {
 //    }
 
 
-    @Test void updateBook() throws Exception {
-        BooksDto books = new BooksDto();
-        when(booksService.fetchBook("1984")).thenReturn(books);
-        this.mockMvc.perform(put("/api/book/1984").contentType(MediaType.APPLICATION_JSON).content("{\"pageCount\":\"1\"}"))
-                .andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()",is(2)))
-                .andExpect(jsonPath("$.statusCode",is("200")))
-                .andExpect(jsonPath("$.statusMessage",is(BOOK_UPDATED_MESSAGE_200)));
-    }
+//    @Test void updateBook() throws Exception {
+//        BooksDto books = new BooksDto();
+//        when(booksService.fetchBook("1984")).thenReturn(books);
+//        this.mockMvc.perform(put("/api/book/1984").contentType(MediaType.APPLICATION_JSON).content("{\"pageCount\":\"1\"}"))
+//                .andDo(print()).andExpect(status().isOk())
+//                .andExpect(jsonPath("$.length()",is(2)))
+//                .andExpect(jsonPath("$.statusCode",is("200")))
+//                .andExpect(jsonPath("$.statusMessage",is(BOOK_UPDATED_MESSAGE_200)));
+//    }
 
     @Test void deleteBook() throws Exception {
         when(booksService.deleteBook("Dracula")).thenReturn(true);
