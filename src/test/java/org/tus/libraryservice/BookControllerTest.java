@@ -25,7 +25,6 @@ import static org.mockito.Mockito.when;
 import static org.tus.libraryservice.constants.BooksConstants.BOOK_CREATED_MESSAGE_201;
 
 @SpringBootTest
-
 public class BookControllerTest {
 
     @Autowired BookController bookController;

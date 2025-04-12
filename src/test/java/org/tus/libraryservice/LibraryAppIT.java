@@ -67,4 +67,37 @@ public class LibraryAppIT {
         assertTrue(newUser.contains(updatedUser.get().getMobileNumber()));
 
     }
+
+
+    @Test
+    @Sql({"/schema.sql"})
+    void CheckoutALibraryBook() throws JsonProcessingException {
+        String newUser = "{" +
+                "\"username\":\"admin_user\"}";
+
+        TestRestTemplate restTemplate = new TestRestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        //checckout a book
+        HttpEntity<String> entity = new HttpEntity<>(newUser, headers);
+        ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:8080/api/user/1/checkout/Frankenstein", entity, String.class);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+
+
+        //validate book is present under a users profile
+        HttpHeaders getHeaders = new HttpHeaders();
+        getHeaders.setContentType(MediaType.APPLICATION_JSON);
+        ResponseEntity<String> getResponse = restTemplate.getForEntity("http://localhost:8080/api/user/1",String.class);
+        assertEquals(HttpStatus.OK, getResponse.getStatusCode());
+
+        assertTrue(getResponse.getBody().contains("admin_user"));
+        assertTrue(getResponse.getBody().contains("conor@gmail.com"));
+        assertTrue(getResponse.getBody().contains("0987654321"));
+        assertTrue(getResponse.getBody().contains("checkedBooks"));
+        assertTrue(getResponse.getBody().contains("Frankenstein"));
+        assertTrue(getResponse.getBody().contains("ON_TIME"));
+
+    }
 }

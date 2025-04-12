@@ -46,7 +46,7 @@ pipeline{
                                 sshTransfer(
                                     sourceFiles: 'target/*.jar',
                                     removePrefix: 'target',
-                                    remoteDirectory: '/opt/docker',
+                                    remoteDirectory: '//opt//docker',
                                     execCommand: "export ANSIBLE_BECOME_PASSWORD='ansibleadmin' && ansible-playbook -i /opt/docker/hosts /opt/docker/devops-image.yml"
                                 )
                             ]
