@@ -11,12 +11,15 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.tus.libraryservice.controller.BookController;
 import org.tus.libraryservice.dto.BooksDto;
+import org.tus.libraryservice.dto.CheckedBooksDto;
 import org.tus.libraryservice.entity.Books;
 import org.tus.libraryservice.repository.BooksRepository;
 import org.tus.libraryservice.service.IBooksService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.mockito.Mockito.when;
 
@@ -26,6 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.Matchers.is;
 import static org.tus.libraryservice.constants.BooksConstants.*;
+import static org.tus.libraryservice.mapper.BooksMapper.mapToBooksDto;
+import static org.tus.libraryservice.mapper.CheckedBooksMapper.mapToCheckedBooksDto;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -36,30 +41,53 @@ public class BookControllerMockMvcTest {
     @MockitoBean IBooksService booksService;
     @Autowired private MockMvc mockMvc;
 
-//    @Test
-//    public void findAllBooks() throws Exception {
-//        List<Books> books = new ArrayList<>();
-//        when(booksRepository.findAll()).thenReturn(books);
-//        this.mockMvc.perform(get("/api/book")).andDo(print()).andExpect(status().isOk())
-//                        .andExpect(jsonPath("$.length()",is(10)));
-//    }
+    @Test
+    public void findAllBooks() throws Exception {
+        List<Books> books = IntStream.range(0, 10)
+                .mapToObj(i -> new Books(i,"Title " + i, "Author " + i,"i"))
+                .toList();
 
-//    @Test
-//    public void findASpecificBook() throws Exception {
-//        BooksDto books = new BooksDto();
-//        when(booksService.fetchBook("1984")).thenReturn(books);
-//        this.mockMvc.perform(get("/api/book/1984")).andDo(print()).andExpect(status().isOk())
-//                .andExpect(jsonPath("$.length()",is(4)))
-//                .andExpect(jsonPath("$.bookName",is("1984")))
-//                .andExpect(jsonPath("$.author",is("George Orwell")))
-//                .andExpect(jsonPath("$.pageCount",is("328")));
-//    }
+
+        List<BooksDto> booksDtoList = books.stream()
+                .map(book -> mapToBooksDto(book, new BooksDto()))
+                .toList();
+
+
+        when(booksService.findAllBooks()).thenReturn(booksDtoList);
+        this.mockMvc.perform(get("/api/book")).andDo(print()).andExpect(status().isOk())
+                        .andExpect(jsonPath("$.length()",is(10)));
+    }
+
+    @Test
+    public void findASpecificBook() throws Exception {
+        BooksDto books = new BooksDto();
+        books.setBookName("1984");
+        books.setAuthor("George Orwell");
+        books.setPageCount("328");
+        books.setBookId(1);
+
+        when(booksService.fetchBook("1984")).thenReturn(books);
+        this.mockMvc.perform(get("/api/book/1984")).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()",is(4)))
+                .andExpect(jsonPath("$.bookName",is("1984")))
+                .andExpect(jsonPath("$.author",is("George Orwell")))
+                .andExpect(jsonPath("$.pageCount",is("328")));
+    }
 
 
 //    @Test void updateBook() throws Exception {
 //        BooksDto books = new BooksDto();
-//        when(booksService.fetchBook("1984")).thenReturn(books);
-//        this.mockMvc.perform(put("/api/book/1984").contentType(MediaType.APPLICATION_JSON).content("{\"pageCount\":\"1\"}"))
+//        books.setBookName("1984");
+//        books.setAuthor("George Orwell");
+//        books.setPageCount("328");
+//        books.setBookId(1);
+//
+//        when(booksService.updateBook("1984",books)).thenReturn(true);
+//        this.mockMvc.perform(put("/api/book/1984").contentType(MediaType.APPLICATION_JSON)
+//                        .content("{" +
+//                                "\"pageCount\":\"1\"," +
+//                                "\"author\":\"conor\"" +
+//                                "}"))
 //                .andDo(print()).andExpect(status().isOk())
 //                .andExpect(jsonPath("$.length()",is(2)))
 //                .andExpect(jsonPath("$.statusCode",is("200")))
@@ -95,15 +123,18 @@ public class BookControllerMockMvcTest {
                 .andExpect(jsonPath("$.statusMessage",is(BOOK_CREATED_MESSAGE_201)));
     }
 
-//    @Test
-//    void createTheSameBook() throws Exception {
+    @Test
+    void createTheSameBook() throws Exception {
 //        ObjectMapper mapper = new ObjectMapper();
 //        BooksDto newBook = new BooksDto();
+//
 //        newBook.setBookName("Ulysses");
 //        newBook.setAuthor("James Joyce");
 //        newBook.setPageCount("730");
+//        Optional<BooksDto> booksOptional = Optional.of(newBook);
 //
 //        String jsonString = mapper.writeValueAsString(newBook);
+//        when(booksRepository.findBookByBookName("Ulysses")).thenReturn(booksOptional);
 //
 //        this.mockMvc.perform(post("/api/book").contentType(MediaType.APPLICATION_JSON).content("{" +
 //                        "\"bookName\":\"" + newBook.getBookName() + "\"," +
@@ -114,7 +145,7 @@ public class BookControllerMockMvcTest {
 //                .andExpect(jsonPath("$.length()",is(4)))
 //                .andExpect(jsonPath("$.errorCode",is("CONFLICT")))
 //                .andExpect(jsonPath("$.errorMessage",is("Book already exists")));
-//    }
+    }
 
 //    @Test
 //    void getABookThatDoesNotExist() throws Exception {
