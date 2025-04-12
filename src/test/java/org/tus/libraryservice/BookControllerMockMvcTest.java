@@ -2,7 +2,6 @@ package org.tus.libraryservice;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,14 +10,11 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.tus.libraryservice.controller.BookController;
 import org.tus.libraryservice.dto.BooksDto;
-import org.tus.libraryservice.dto.CheckedBooksDto;
 import org.tus.libraryservice.entity.Books;
 import org.tus.libraryservice.repository.BooksRepository;
 import org.tus.libraryservice.service.IBooksService;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.mockito.Mockito.when;
