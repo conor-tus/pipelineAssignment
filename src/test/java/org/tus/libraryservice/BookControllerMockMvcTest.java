@@ -30,7 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.Matchers.is;
 import static org.tus.libraryservice.constants.BooksConstants.*;
 import static org.tus.libraryservice.mapper.BooksMapper.mapToBooksDto;
-import static org.tus.libraryservice.mapper.CheckedBooksMapper.mapToCheckedBooksDto;
 
 @SpringBootTest
 @AutoConfigureMockMvc
