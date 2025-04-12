@@ -10,7 +10,6 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
-import org.tus.libraryservice.controller.LibraryUserController;
 import org.tus.libraryservice.dto.LibraryUserDto;
 import org.tus.libraryservice.entity.LibraryUser;
 import org.tus.libraryservice.repository.LibraryUserRepository;
